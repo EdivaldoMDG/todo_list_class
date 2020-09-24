@@ -18,10 +18,11 @@ export default class TodoListChuva extends Component {
 
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleButtonPress = this.handleButtonPress.bind(this);
+    this.handleEnterPress = this.handleEnterPress.bind(this);
   }
 
   handleInput(input) {
+    console.log("handle input");
     this.setState({
       ...this.state,
       currentItems: {
@@ -32,6 +33,7 @@ export default class TodoListChuva extends Component {
   }
   //add something to our list
   handleSubmit(e) {
+    console.log("handlesubmit");
     if (this.state.currentItems.description.length > 0) {
       this.setState({
         ...this.state,
@@ -49,9 +51,10 @@ export default class TodoListChuva extends Component {
       });
     }
   }
-  handleButtonPress = (e) => {
+  handleEnterPress = (e) => {
     if (e.key === "Enter") {
       this.handleSubmit();
+      e.preventDefault();
     }
   };
 
@@ -62,7 +65,9 @@ export default class TodoListChuva extends Component {
         <header className="Todo-List">
           <form id="todo_form">
             <input
-              onKeyPress={this.handleButtonPress}
+              onKeyPress={(e) => {
+                this.handleEnterPress(e);
+              }}
               type="text"
               id="todoText"
               placeholder="..."

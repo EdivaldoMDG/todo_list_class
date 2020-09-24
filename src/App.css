@@ -28,7 +28,7 @@ body {
 }
 
 #todo_form input::placeholder {
-  color: aquamarine;
+  color: black;
 }
 
 #todo_form input:focus {
