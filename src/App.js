@@ -17,7 +17,7 @@ export default class TodoListChuva extends Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAddButton = this.handleAddButton.bind(this);
     this.handleEnterPress = this.handleEnterPress.bind(this);
   }
 
@@ -32,8 +32,8 @@ export default class TodoListChuva extends Component {
     });
   }
   //add something to our list
-  handleSubmit(e) {
-    console.log("handlesubmit");
+  handleAddButton(e) {
+    console.log("handleAddButton");
     if (this.state.currentItems.description.length > 0) {
       this.setState({
         ...this.state,
@@ -53,7 +53,7 @@ export default class TodoListChuva extends Component {
   }
   handleEnterPress = (e) => {
     if (e.key === "Enter") {
-      this.handleSubmit();
+      this.handleAddButton();
       e.preventDefault();
     }
   };
@@ -79,7 +79,7 @@ export default class TodoListChuva extends Component {
             <button
               type="button"
               onClick={(e) => {
-                this.handleSubmit(e);
+                this.handleAddButton(e);
                 this.setState({
                   currentItems: {
                     description: "",
