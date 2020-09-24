@@ -1,38 +1,52 @@
-.App {
+body {
+  background-color: #d9ecf2;
+}
+.Todo-List-App,
+.title {
   text-align: center;
+  color: #fcbf1e;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Todo-List-App {
+  background-color: #ecf4f3;
+  min-height: 500px;
+  width: 400px;
+  margin: 40px auto;
+  border-radius: 10%;
+  padding: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#todo_form input {
+  background-color: white;
+  border: 0;
+  width: 200px;
+  height: 50px;
+  padding: 0 20px;
+  border-radius: 10px;
+  margin: 20px;
+  font-size: 18px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#todo_form input::placeholder {
+  color: aquamarine;
 }
 
-.App-link {
-  color: #61dafb;
+#todo_form input:focus {
+  outline: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#todo_form button {
+  height: 50px;
+  width: 80px;
+  border-radius: 5px;
+  border: 0;
+  background-color: #fcbf1e;
+  cursor: pointer;
+}
+.Todo-List-App,
+.list {
+  list-style-type: none;
+}
+.list ul::li {
+  width: 30px;
 }

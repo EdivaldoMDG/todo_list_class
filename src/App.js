@@ -1,26 +1,99 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+const lists = require("./datastore.js");
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class TodoListChuva extends Component {
+  constructor(props) {
+    super(props);
+    const todos = new lists([]);
+    this.state = {
+      items: todos,
+      // todoList: todos.fetchItems(),
+      currentItems: {
+        description: "",
+        id: "",
+      },
+      errorMsg: "",
+    };
+
+    this.handleInput = this.handleInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleButtonPress = this.handleButtonPress.bind(this);
+  }
+
+  handleInput(input) {
+    this.setState({
+      ...this.state,
+      currentItems: {
+        description: input,
+        id: Date.now(),
+      },
+    });
+  }
+  //add something to our list
+  handleSubmit(e) {
+    if (this.state.currentItems.description.length > 0) {
+      this.setState({
+        ...this.state,
+        ...this.state.items.addItem(this.state.currentItems),
+        currentItems: {
+          description: "",
+          id: "",
+        },
+        errorMsg: "",
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        errorMsg: "Empty description not allowed",
+      });
+    }
+  }
+  handleButtonPress = (e) => {
+    if (e.key === "Enter") {
+      this.handleSubmit();
+    }
+  };
+
+  render() {
+    return (
+      <div className="Todo-List-App">
+        <h1 className="title">TODO LIST CHUVA</h1>
+        <header className="Todo-List">
+          <form id="todo_form">
+            <input
+              onKeyPress={this.handleButtonPress}
+              type="text"
+              id="todoText"
+              placeholder="..."
+              onChange={(e) => {
+                this.handleInput(e.currentTarget.value);
+              }}
+              value={this.state.currentItems.description}
+            />
+            <button
+              type="button"
+              onClick={(e) => {
+                this.handleSubmit(e);
+                this.setState({
+                  currentItems: {
+                    description: "",
+                  },
+                });
+              }}
+            >
+              Add
+            </button>
+          </form>
+          <ul className="list">
+            {this.state.items.fetchItems() !== undefined &&
+              this.state.items
+                .fetchItems()
+                .map((item) => <li key={item.id}>{item.description}</li>)}
+          </ul>
+        </header>
+        {this.state.errorMsg.length > 0 && <p>{this.state.errorMsg}</p>}
+      </div>
+    );
+  }
 }
-
-export default App;
