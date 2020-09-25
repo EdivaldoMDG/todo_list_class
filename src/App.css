@@ -58,6 +58,7 @@ body {
   padding: 1rem;
   border-radius: 0.5rem;
   width: 80%;
+  margin: 1rem;
 }
 
 .listItem button {

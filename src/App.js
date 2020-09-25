@@ -19,6 +19,7 @@ export default class TodoListChuva extends Component {
     this.handleInput = this.handleInput.bind(this);
     this.handleAddButton = this.handleAddButton.bind(this);
     this.handleEnterPress = this.handleEnterPress.bind(this);
+    this.handleDeleteItem = this.handleDeleteItem.bind(this);
   }
 
   handleInput(input) {
@@ -57,6 +58,13 @@ export default class TodoListChuva extends Component {
       e.preventDefault();
     }
   };
+  handleDeleteItem(itemId) {
+    console.log("Handle Delete Item");
+    this.setState({
+      ...this.state,
+      ...this.state.items.removeItem(itemId),
+    });
+  }
 
   render() {
     return (
@@ -95,7 +103,14 @@ export default class TodoListChuva extends Component {
               this.state.items.fetchItems().map((item) => (
                 <li className="listItem" key={item.id}>
                   {item.description}
-                  <button>Delete</button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      this.handleDeleteItem(item.id);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
           </ul>
