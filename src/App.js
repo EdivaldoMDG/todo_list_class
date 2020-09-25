@@ -92,9 +92,12 @@ export default class TodoListChuva extends Component {
           </form>
           <ul className="list">
             {this.state.items.fetchItems() !== undefined &&
-              this.state.items
-                .fetchItems()
-                .map((item) => <li key={item.id}>{item.description}</li>)}
+              this.state.items.fetchItems().map((item) => (
+                <li className="listItem" key={item.id}>
+                  {item.description}
+                  <button>Delete</button>
+                </li>
+              ))}
           </ul>
         </header>
         {this.state.errorMsg.length > 0 && <p>{this.state.errorMsg}</p>}

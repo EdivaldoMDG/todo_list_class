@@ -50,3 +50,23 @@ body {
 .list ul::li {
   width: 30px;
 }
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 80%;
+}
+
+.listItem button {
+  border: none;
+  outline: none;
+  background-color: #fcbf1e;
+  border-radius: 5%;
+  padding: 0.5rem;
+}
+.listItem button:active {
+  transform: scale(0.9);
+}
