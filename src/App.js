@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
+import Edit from "./assets/edit.svg";
+import Delete from "./assets/delete.svg";
 const lists = require("./datastore.js");
 
 export default class TodoListChuva extends Component {
@@ -14,12 +16,14 @@ export default class TodoListChuva extends Component {
         id: "",
       },
       errorMsg: "",
+      isEditable: false,
     };
 
     this.handleInput = this.handleInput.bind(this);
     this.handleAddButton = this.handleAddButton.bind(this);
     this.handleEnterPress = this.handleEnterPress.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
+    this.handleUpdateItem = this.handleUpdateItem.bind(this);
   }
 
   handleInput(input) {
@@ -65,6 +69,9 @@ export default class TodoListChuva extends Component {
       ...this.state.items.removeItem(itemId),
     });
   }
+  handleUpdateItem() {
+    this.setState({ ...this.state, isEditable: true });
+  }
 
   render() {
     return (
@@ -102,15 +109,35 @@ export default class TodoListChuva extends Component {
             {this.state.items.fetchItems() !== undefined &&
               this.state.items.fetchItems().map((item) => (
                 <li className="listItem" key={item.id}>
-                  {item.description}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      this.handleDeleteItem(item.id);
-                    }}
-                  >
-                    Delete
-                  </button>
+                  {!this.state.isEditable ? (
+                    <p>{item.description}</p>
+                  ) : (
+                    <input
+                      type="text"
+                      value={
+                        item.description || this.state.currentItems.description
+                      }
+                      onChange={(e) => this.handleInput(e.currentTarget.value)}
+                    ></input>
+                  )}
+                  <span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        this.handleUpdateItem(item.id);
+                      }}
+                    >
+                      <img src={Edit} alt="X" className="buttonIcon" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        this.handleDeleteItem(item.id);
+                      }}
+                    >
+                      <img src={Delete} alt="X" className="buttonIcon" />
+                    </button>
+                  </span>
                 </li>
               ))}
           </ul>

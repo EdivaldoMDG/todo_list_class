@@ -64,9 +64,17 @@ body {
 .listItem button {
   border: none;
   outline: none;
-  background-color: #fcbf1e;
+  background-color: #fff;
   border-radius: 5%;
   padding: 0.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+}
+.buttonIcon {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 .listItem button:active {
   transform: scale(0.9);
