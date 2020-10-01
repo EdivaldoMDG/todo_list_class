@@ -144,7 +144,11 @@ export default class TodoListChuva extends Component {
                   ) : (
                     <input
                       type="text"
-                      value={this.state.editInput.description}
+                      value={
+                        this.state.editInput.description.length > 0
+                          ? this.state.editInput.description
+                          : item.description
+                      }
                       onChange={(e) => {
                         this.handleEditInput(e.currentTarget.value, item.id);
                       }}
