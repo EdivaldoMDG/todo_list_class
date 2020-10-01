@@ -30,6 +30,9 @@ export default class TodoListChuva extends Component {
     this.handleEnterPress = this.handleEnterPress.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
     this.handleUpdateItem = this.handleUpdateItem.bind(this);
+    this.handleValueOnTheUpdateInput = this.handleValueOnTheUpdateInput.bind(
+      this
+    );
   }
 
   handleInput(input) {
@@ -90,6 +93,15 @@ export default class TodoListChuva extends Component {
       ...this.state.items.updatedItem(id, property),
     });
   }
+  handleValueOnTheUpdateInput() {
+    this.setState({
+      ...this.state,
+      ...this.state.items.updatedItem(this.state.editInput.id, {
+        description: this.state.editInput.description,
+        isEditable: false,
+      }),
+    });
+  }
 
   render() {
     return (
@@ -132,14 +144,10 @@ export default class TodoListChuva extends Component {
                   ) : (
                     <input
                       type="text"
-                      value={
-                        this.state.editInput.description.length > 0
-                          ? this.state.editInput.description
-                          : item.description
-                      }
-                      onChange={(e) =>
-                        this.handleEditInput(e.currentTarget.value, item.id)
-                      }
+                      value={this.state.editInput.description}
+                      onChange={(e) => {
+                        this.handleEditInput(e.currentTarget.value, item.id);
+                      }}
                     />
                   )}
                   <span>
@@ -161,6 +169,16 @@ export default class TodoListChuva extends Component {
                     >
                       <img src={Delete} alt="X" className="buttonIcon" />
                     </button>
+                    {item.isEditable && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          this.handleValueOnTheUpdateInput();
+                        }}
+                      >
+                        Apply
+                      </button>
+                    )}
                   </span>
                 </li>
               ))}
