@@ -14,31 +14,36 @@ export default class TodoListChuva extends Component {
       currentItems: {
         description: "",
         id: "",
+        isEditable: false,
       },
       errorMsg: "",
       isEditable: false,
+      editInput: {
+        description: "",
+        id: "",
+      },
     };
 
     this.handleInput = this.handleInput.bind(this);
     this.handleAddButton = this.handleAddButton.bind(this);
+    this.handleEditInput = this.handleEditInput.bind(this);
     this.handleEnterPress = this.handleEnterPress.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
     this.handleUpdateItem = this.handleUpdateItem.bind(this);
   }
 
   handleInput(input) {
-    console.log("handle input");
     this.setState({
       ...this.state,
       currentItems: {
         description: input,
         id: Date.now(),
+        isEditable: false,
       },
     });
   }
   //add something to our list
   handleAddButton(e) {
-    console.log("handleAddButton");
     if (this.state.currentItems.description.length > 0) {
       this.setState({
         ...this.state,
@@ -63,14 +68,27 @@ export default class TodoListChuva extends Component {
     }
   };
   handleDeleteItem(itemId) {
-    console.log("Handle Delete Item");
     this.setState({
       ...this.state,
       ...this.state.items.removeItem(itemId),
     });
   }
-  handleUpdateItem() {
-    this.setState({ ...this.state, isEditable: true });
+
+  handleEditInput(input, id) {
+    this.setState({
+      ...this.state,
+      editInput: {
+        description: input,
+        id: id,
+      },
+    });
+  }
+  //update item
+  handleUpdateItem(id, property) {
+    this.setState({
+      ...this.state,
+      ...this.state.items.updatedItem(id, property),
+    });
   }
 
   render() {
@@ -109,22 +127,28 @@ export default class TodoListChuva extends Component {
             {this.state.items.fetchItems() !== undefined &&
               this.state.items.fetchItems().map((item) => (
                 <li className="listItem" key={item.id}>
-                  {!this.state.isEditable ? (
+                  {!item.isEditable ? (
                     <p>{item.description}</p>
                   ) : (
                     <input
                       type="text"
                       value={
-                        item.description || this.state.currentItems.description
+                        this.state.editInput.description.length > 0
+                          ? this.state.editInput.description
+                          : item.description
                       }
-                      onChange={(e) => this.handleInput(e.currentTarget.value)}
-                    ></input>
+                      onChange={(e) =>
+                        this.handleEditInput(e.currentTarget.value, item.id)
+                      }
+                    />
                   )}
                   <span>
                     <button
                       type="button"
                       onClick={() => {
-                        this.handleUpdateItem(item.id);
+                        this.handleUpdateItem(item.id, {
+                          isEditable: !item.isEditable,
+                        });
                       }}
                     >
                       <img src={Edit} alt="X" className="buttonIcon" />
@@ -142,6 +166,7 @@ export default class TodoListChuva extends Component {
               ))}
           </ul>
         </header>
+
         {this.state.errorMsg.length > 0 && <p>{this.state.errorMsg}</p>}
       </div>
     );

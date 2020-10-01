@@ -20,10 +20,12 @@ class Lists {
   updatedItem(id, property) {
     this.list = this.list.map((element) => {
       if (element.id === id) {
-        return { ...element, ...property };
+        element = { ...element, ...property };
       }
-      return this.list;
+      return element;
     });
+
+    return this.list;
   }
   //function clearList
   //function clearList
