@@ -70,6 +70,13 @@ export default class TodoListChuva extends Component {
       e.preventDefault();
     }
   };
+  handleApplyOnEnterPress = (e) => {
+    if (e.key === "Enter") {
+      this.handleValueOnTheUpdateInput();
+      e.preventDefault();
+    }
+  };
+
   handleDeleteItem(itemId) {
     this.setState({
       ...this.state,
@@ -144,6 +151,9 @@ export default class TodoListChuva extends Component {
                   ) : (
                     <input
                       type="text"
+                      onKeyPress={(e) => {
+                        this.handleApplyOnEnterPress(e);
+                      }}
                       value={
                         this.state.editInput.description.length > 0
                           ? this.state.editInput.description
