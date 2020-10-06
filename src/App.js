@@ -10,7 +10,6 @@ export default class TodoListChuva extends Component {
     const todos = new lists([]);
     this.state = {
       items: todos,
-      // todoList: todos.fetchItems(),
       currentItems: {
         description: "",
         id: "",
@@ -24,18 +23,20 @@ export default class TodoListChuva extends Component {
       },
     };
 
-    this.handleInput = this.handleInput.bind(this);
-    this.handleAddButton = this.handleAddButton.bind(this);
-    this.handleEditInput = this.handleEditInput.bind(this);
-    this.handleEnterPress = this.handleEnterPress.bind(this);
-    this.handleDeleteItem = this.handleDeleteItem.bind(this);
-    this.handleUpdateItem = this.handleUpdateItem.bind(this);
+    this.didTapTextField = this.didTapTextField.bind(this);
+    this.didTapAddButton = this.didTapAddButton.bind(this);
+    this.DidTapEditInputTextField = this.DidTapEditInputTextField.bind(this);
+    this.DidTapEnterButton = this.DidTapEnterButton.bind(this);
+    this.DidTapDeleteButton = this.DidTapDeleteButton.bind(this);
+    this.DidTapUpdateButton = this.DidTapUpdateButton.bind(this);
     this.handleValueOnTheUpdateInput = this.handleValueOnTheUpdateInput.bind(
       this
     );
+    this.handleClearState = this.handleClearState.bind(this);
   }
 
-  handleInput(input) {
+  didTapTextField(input) {
+    console.log("did Tap Text Field");
     this.setState({
       ...this.state,
       currentItems: {
@@ -46,7 +47,8 @@ export default class TodoListChuva extends Component {
     });
   }
   //add something to our list
-  handleAddButton(e) {
+  didTapAddButton(e) {
+    console.log("did Tap Add Button");
     if (this.state.currentItems.description.length > 0) {
       this.setState({
         ...this.state,
@@ -64,27 +66,30 @@ export default class TodoListChuva extends Component {
       });
     }
   }
-  handleEnterPress = (e) => {
+  DidTapEnterButton = (e) => {
+    console.log("Enter Press");
     if (e.key === "Enter") {
-      this.handleAddButton();
+      this.didTapAddButton();
       e.preventDefault();
     }
   };
-  handleApplyOnEnterPress = (e) => {
+  DidTapEnterOnApplyButton = (e) => {
     if (e.key === "Enter") {
       this.handleValueOnTheUpdateInput();
+      this.handleClearState();
       e.preventDefault();
     }
   };
 
-  handleDeleteItem(itemId) {
+  DidTapDeleteButton(itemId) {
     this.setState({
       ...this.state,
       ...this.state.items.removeItem(itemId),
     });
   }
 
-  handleEditInput(input, id) {
+  DidTapEditInputTextField(input, id) {
+    console.log("Did tap edit input text field");
     this.setState({
       ...this.state,
       editInput: {
@@ -94,13 +99,15 @@ export default class TodoListChuva extends Component {
     });
   }
   //update item
-  handleUpdateItem(id, property) {
+  DidTapUpdateButton(id, property) {
+    console.log("handle update item");
     this.setState({
       ...this.state,
       ...this.state.items.updatedItem(id, property),
     });
   }
   handleValueOnTheUpdateInput() {
+    console.log("handle Value On The Update Input");
     this.setState({
       ...this.state,
       ...this.state.items.updatedItem(this.state.editInput.id, {
@@ -110,6 +117,18 @@ export default class TodoListChuva extends Component {
     });
   }
 
+  handleClearState() {
+    this.setState({
+      currentItems: {
+        description: "",
+        id: "",
+      },
+      editInput: {
+        description: "",
+        id: "",
+      },
+    });
+  }
   render() {
     return (
       <div className="Todo-List-App">
@@ -118,20 +137,22 @@ export default class TodoListChuva extends Component {
           <form id="todo_form">
             <input
               onKeyPress={(e) => {
-                this.handleEnterPress(e);
+                //console.log("onKeyPress");
+                this.DidTapEnterButton(e);
               }}
               type="text"
               id="todoText"
               placeholder="..."
               onChange={(e) => {
-                this.handleInput(e.currentTarget.value);
+                // console.log("onChange");
+                this.didTapTextField(e.currentTarget.value);
               }}
               value={this.state.currentItems.description}
             />
             <button
               type="button"
               onClick={(e) => {
-                this.handleAddButton(e);
+                this.didTapAddButton(e);
                 this.setState({
                   currentItems: {
                     description: "",
@@ -152,7 +173,7 @@ export default class TodoListChuva extends Component {
                     <input
                       type="text"
                       onKeyPress={(e) => {
-                        this.handleApplyOnEnterPress(e);
+                        this.DidTapEnterOnApplyButton(e);
                       }}
                       value={
                         this.state.editInput.description.length > 0
@@ -160,7 +181,10 @@ export default class TodoListChuva extends Component {
                           : item.description
                       }
                       onChange={(e) => {
-                        this.handleEditInput(e.currentTarget.value, item.id);
+                        this.DidTapEditInputTextField(
+                          e.currentTarget.value,
+                          item.id
+                        );
                       }}
                     />
                   )}
@@ -168,7 +192,7 @@ export default class TodoListChuva extends Component {
                     <button
                       type="button"
                       onClick={() => {
-                        this.handleUpdateItem(item.id, {
+                        this.DidTapUpdateButton(item.id, {
                           isEditable: !item.isEditable,
                         });
                       }}
@@ -178,7 +202,7 @@ export default class TodoListChuva extends Component {
                     <button
                       type="button"
                       onClick={() => {
-                        this.handleDeleteItem(item.id);
+                        this.DidTapDeleteButton(item.id);
                       }}
                     >
                       <img src={Delete} alt="X" className="buttonIcon" />
@@ -188,6 +212,7 @@ export default class TodoListChuva extends Component {
                         type="button"
                         onClick={() => {
                           this.handleValueOnTheUpdateInput();
+                          this.handleClearState();
                         }}
                       >
                         Apply
