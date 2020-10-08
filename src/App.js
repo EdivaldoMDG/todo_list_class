@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Edit from "./assets/edit.svg";
 import Delete from "./assets/delete.svg";
+import ListItem from "./components/ListItem";
 const lists = require("./datastore.js");
 
 export default class TodoListChuva extends Component {
@@ -165,62 +166,23 @@ export default class TodoListChuva extends Component {
           </form>
           <ul className="list">
             {this.state.items.fetchItems() !== undefined &&
-              this.state.items.fetchItems().map((item) => (
-                <li className="listItem" key={item.id}>
-                  {!item.isEditable ? (
-                    <p>{item.description}</p>
-                  ) : (
-                    <input
-                      type="text"
-                      onKeyPress={(e) => {
-                        this.DidTapEnterOnApplyButton(e);
-                      }}
-                      value={
-                        this.state.editInput.description.length > 0
-                          ? this.state.editInput.description
-                          : item.description
-                      }
-                      onChange={(e) => {
-                        this.DidTapEditInputTextField(
-                          e.currentTarget.value,
-                          item.id
-                        );
-                      }}
-                    />
-                  )}
-                  <span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        this.DidTapUpdateButton(item.id, {
-                          isEditable: !item.isEditable,
-                        });
-                      }}
-                    >
-                      <img src={Edit} alt="X" className="buttonIcon" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        this.DidTapDeleteButton(item.id);
-                      }}
-                    >
-                      <img src={Delete} alt="X" className="buttonIcon" />
-                    </button>
-                    {item.isEditable && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          this.handleValueOnTheUpdateInput();
-                          this.handleClearState();
-                        }}
-                      >
-                        Apply
-                      </button>
-                    )}
-                  </span>
-                </li>
-              ))}
+              this.state.items
+                .fetchItems()
+                .map((item) => (
+                  <ListItem
+                    item={item}
+                    editInputDescription={this.state.editInput.description}
+                    DidTapEnterOnApplyButton={this.DidTapEnterOnApplyButton}
+                    State={this.state}
+                    DidTapEditInputTextField={this.DidTapEditInputTextField}
+                    DidTapUpdateButton={this.DidTapUpdateButton}
+                    DidTapDeleteButton={this.DidTapDeleteButton}
+                    handleValueOnTheUpdateInput={
+                      this.handleValueOnTheUpdateInput
+                    }
+                    handleClearState={this.handleClearState}
+                  />
+                ))}
           </ul>
         </header>
 

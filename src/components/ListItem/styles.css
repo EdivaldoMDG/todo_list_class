@@ -1,0 +1,36 @@
+.Todo-List-App,
+.list {
+  list-style-type: none;
+}
+.list ul::li {
+  width: 30px;
+}
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 80%;
+  margin: 1rem;
+}
+
+.listItem button {
+  border: none;
+  outline: none;
+  background-color: #fff;
+  border-radius: 5%;
+  padding: 0.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+}
+.buttonIcon {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.listItem button:active {
+  transform: scale(0.9);
+}
