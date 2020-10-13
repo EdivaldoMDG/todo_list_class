@@ -13,7 +13,7 @@ class ListItem extends Component {
           <input
             type="text"
             onKeyPress={(e) => {
-              this.props.DidTapEnterOnApplyButton(e);
+              this.props.didTapEnterOnApplyButton(e);
             }}
             value={
               this.props.editInputDescription.length > 0
@@ -21,21 +21,24 @@ class ListItem extends Component {
                 : this.props.item.description
             }
             onChange={(e) => {
-              this.props.DidTapEditInputTextField(
+              this.props.WriteOnEditInputTextField(
                 e.currentTarget.value,
                 this.props.item.id
               );
             }}
           />
         )}
-
         <span>
           <button
             type="button"
             onClick={() => {
-              this.props.DidTapUpdateButton(this.props.item.id, {
+              this.props.didTapUpdateButton(this.props.item.id, {
                 isEditable: !this.props.item.isEditable,
+                
               });
+              this.props.didTapEditButton(this.props.item.id)
+              
+             
             }}
           >
             <img src={Edit} alt="X" className="buttonIcon" />
@@ -43,7 +46,7 @@ class ListItem extends Component {
           <button
             type="button"
             onClick={() => {
-              this.props.DidTapDeleteButton(this.props.item.id);
+              this.props.didTapDeleteButton(this.props.item.id);
             }}
           >
             <img src={Delete} alt="X" className="buttonIcon" />

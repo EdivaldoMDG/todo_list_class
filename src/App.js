@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import Edit from "./assets/edit.svg";
-import Delete from "./assets/delete.svg";
 import ListItem from "./components/ListItem";
 const lists = require("./datastore.js");
 
@@ -26,14 +24,16 @@ export default class TodoListChuva extends Component {
 
     this.didTapTextField = this.didTapTextField.bind(this);
     this.didTapAddButton = this.didTapAddButton.bind(this);
-    this.DidTapEditInputTextField = this.DidTapEditInputTextField.bind(this);
-    this.DidTapEnterButton = this.DidTapEnterButton.bind(this);
-    this.DidTapDeleteButton = this.DidTapDeleteButton.bind(this);
-    this.DidTapUpdateButton = this.DidTapUpdateButton.bind(this);
+    this.didTapEditButton = this.didTapEditButton.bind(this);
+    this.WriteOnEditInputTextField = this.WriteOnEditInputTextField.bind(this);
+    this.didTapEnterButton = this.didTapEnterButton.bind(this);
+    this.didTapDeleteButton = this.didTapDeleteButton.bind(this);
+    this.didTapUpdateButton = this.didTapUpdateButton.bind(this);
     this.handleValueOnTheUpdateInput = this.handleValueOnTheUpdateInput.bind(
       this
     );
     this.handleClearState = this.handleClearState.bind(this);
+    
   }
 
   didTapTextField(input) {
@@ -67,14 +67,14 @@ export default class TodoListChuva extends Component {
       });
     }
   }
-  DidTapEnterButton = (e) => {
+  didTapEnterButton = (e) => {
     console.log("Enter Press");
     if (e.key === "Enter") {
       this.didTapAddButton();
       e.preventDefault();
     }
   };
-  DidTapEnterOnApplyButton = (e) => {
+  didTapEnterOnApplyButton = (e) => {
     if (e.key === "Enter") {
       this.handleValueOnTheUpdateInput();
       this.handleClearState();
@@ -82,15 +82,15 @@ export default class TodoListChuva extends Component {
     }
   };
 
-  DidTapDeleteButton(itemId) {
+  didTapDeleteButton(itemId) {
     this.setState({
       ...this.state,
       ...this.state.items.removeItem(itemId),
     });
   }
 
-  DidTapEditInputTextField(input, id) {
-    console.log("Did tap edit input text field");
+  WriteOnEditInputTextField(input, id) {
+    console.log("Write on edit input text field");
     this.setState({
       ...this.state,
       editInput: {
@@ -100,11 +100,20 @@ export default class TodoListChuva extends Component {
     });
   }
   //update item
-  DidTapUpdateButton(id, property) {
-    console.log("handle update item");
+  didTapUpdateButton(id, property) {
+    console.log("Did tap update button");
+      this.setState({
+        ...this.state,
+        editInput:{
+          id:"",
+          description:"",
+
+        }
+      })
     this.setState({
       ...this.state,
       ...this.state.items.updatedItem(id, property),
+      
     });
   }
   handleValueOnTheUpdateInput() {
@@ -128,7 +137,24 @@ export default class TodoListChuva extends Component {
         description: "",
         id: "",
       },
+
     });
+  }
+
+  didTapEditButton(itemId){
+   
+      this.state.items.fetchItems().map((item) => 
+        item.id !== itemId ?
+           (this.setState({
+            ...this.state,
+            ...this.state.items.updatedItem(item.id, {
+              isEditable: false,
+            }),
+          })): null
+       
+    );
+
+   
   }
   render() {
     return (
@@ -138,14 +164,12 @@ export default class TodoListChuva extends Component {
           <form id="todo_form">
             <input
               onKeyPress={(e) => {
-                //console.log("onKeyPress");
-                this.DidTapEnterButton(e);
+                this.didTapEnterButton(e);
               }}
               type="text"
               id="todoText"
               placeholder="..."
               onChange={(e) => {
-                // console.log("onChange");
                 this.didTapTextField(e.currentTarget.value);
               }}
               value={this.state.currentItems.description}
@@ -170,17 +194,19 @@ export default class TodoListChuva extends Component {
                 .fetchItems()
                 .map((item) => (
                   <ListItem
+                    key={item.id}
                     item={item}
                     editInputDescription={this.state.editInput.description}
-                    DidTapEnterOnApplyButton={this.DidTapEnterOnApplyButton}
+                    didTapEnterOnApplyButton={this.didTapEnterOnApplyButton}
                     State={this.state}
-                    DidTapEditInputTextField={this.DidTapEditInputTextField}
-                    DidTapUpdateButton={this.DidTapUpdateButton}
-                    DidTapDeleteButton={this.DidTapDeleteButton}
+                    WriteOnEditInputTextField={this.WriteOnEditInputTextField}
+                    didTapUpdateButton={this.didTapUpdateButton}
+                    didTapDeleteButton={this.didTapDeleteButton}
                     handleValueOnTheUpdateInput={
                       this.handleValueOnTheUpdateInput
                     }
                     handleClearState={this.handleClearState}
+                    didTapEditButton={this.didTapEditButton}
                   />
                 ))}
           </ul>
